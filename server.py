@@ -6,11 +6,13 @@ import os
 import tensorflow as tf
 from PIL import Image
 from io import BytesIO
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
-# Load your trained CNN model
-model = load_model("cnn_check_model.h5")
+# Load trained CNN model
+model = load_model("cnn_model_final_2.h5")
 
 # Define the function to process the image
 def prepare_image(image, target_size):
@@ -46,10 +48,10 @@ def predict():
     predicted_class = np.argmax(prediction[0])
 
     # Map the predicted class to freshwater fish species
-    species_dict = {0: "Cardinal_tetra", 1: "angel", 2: "arowana" , 3: "clown_loach" , 4: "gold_fish"}  # Example species
+    species_dict = {0: "Angel_fish", 1: "Asian_Arowana", 2:"Cardinal_Tetra", 3:"Clown_Loach"} # species
     fish_species = species_dict.get(predicted_class, "Unknown")
     print(fish_species)
     return jsonify({"prediction": fish_species})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000)
